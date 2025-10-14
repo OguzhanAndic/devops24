@@ -15,9 +15,12 @@ Look at the contents of the `~/.ssh` directory:
 ## QUESTION A
 
 What are the permissions of the `~/.ssh` directory?
-The permisssions that can be found with ls -ld is drwx, that means that you have the permission to read, write and execute.
+The permisssions that can be found with ls -ld is drwx, that means that you have the permission to read, write and execute. this is only the rights for owner.
+Groups and others do not have any type of rights to this folder.
 
 Why are the permissions set in such a way?
+the ssh folder has sensetive data that can be crusial for the security. Anyone having acess to the ssh keys can be a problem for breachings. that is why
+the only user that has any type of rights is the owner. 
 
 ## QUESTION B
 
