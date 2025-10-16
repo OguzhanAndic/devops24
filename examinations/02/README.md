@@ -111,7 +111,7 @@ incompatibilities.
 ## QUESTION A
 
 What happens if you run `ansible-inventory --list` in the directory you created above?
-
+Answer: It will list 
 ## QUESTION B
 
 What happens if you run `ansible-inventory --graph` in the directory you created above?
