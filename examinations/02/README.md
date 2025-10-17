@@ -111,10 +111,15 @@ incompatibilities.
 ## QUESTION A
 
 What happens if you run `ansible-inventory --list` in the directory you created above?
-Answer: It will list 
+Answer: The terminal will give an output of what looks like json code, describing your hostvars, showing there ip adresses, where their keys are and what ansible users are being used. 
 ## QUESTION B
 
 What happens if you run `ansible-inventory --graph` in the directory you created above?
+
+Answer: runing this command you get a graphical text on your terminal showing a hierarchical tree of my inventory groups and hosts. you first see the groupp @all, this will show you all the groups and servers/VM. @ungrouped shows hosts that are not assigned any specific group. The other @ (for me its @db, @web and @controller) are the following servers that has a connection, it will also show their ip adresses one line under. heres an example:
+
+  |--@db:
+  |  |--192.168.121.5
 
 ## QUESTION C
 
@@ -131,6 +136,8 @@ Now run:
 Study the output of this command.
 
 What does the `ansible_connection=local` part mean?
+
+This tells that my ansible is runned on my own computre, meaning that when i use ansible it will not try to connect to any other server thru ssh, and instead do the task from this computer. so for my case it will ping the other computers from this local ansible computer (my own). 
 
 ## BONUS QUESTION
 
@@ -153,3 +160,4 @@ In your Ansible working directory where the `ansible.cfg' is, run
 You should get a pager displaying all available configuration values. How does it differ
 from when you run the same command in your usual home directory?
 
+Answer: The major difference between my home directory and the local directory (examinations/02/upg2/) is that the home directory uses Ansible’s default configuration, while the local directory contains its own ansible.cfg file with custom settings that override the defaults.
