@@ -121,9 +121,14 @@ Run the exact same playbook again and study the output. What is the difference?
 
 What does the `ansible.builtin.debug` module actually do?
 
+Answer: the debug module writes out the node names for every host on to the terminal when the playbook is running. this is used to be sure you are reaching out to the right hosts and to failseatch information ansible gathers from the hosts. 
+
+
 ## QUESTION B
 
 What is the variable 'ansible_facts' and where does it come from?
+
+Answer: ansible_facts is a dictonary in ansible that has information about the hosts that are managed, it contains information like ip addresses, hostnames, CPU, memory etc. Ancible_facts gathers it soource from a built in setup module as soon as you run the playbook/command. 
 
 ## QUESTION C
 
@@ -134,6 +139,8 @@ How do we now remove the software we installed through the playbook above? Make 
 playbook remove the exact same software we previously installed. Call the created
 playbook `03-uninstall-software.yml`.
 
+Answer: to remove the installed software i made a new yml file with almost an identical code, with the diffrence being that i canged the state : to absent instead of present. running the fil/playbook will change the software and give you a "changed" description on the terminal. 
+
 ## BONUS QUESTION
 
 What happens when you run `ansible-playbook` with different options?
@@ -142,6 +149,14 @@ Explain what each of these options do:
 * --verbose, -vv, -vvv, -vvvv
 * --check
 * --syntax-check
+
+Answer: 
+Den första * handlar om att få fram olika mycket infomration kring ansibles körningar. --v eller --verbos är den mest grundlägande extra infon, den vissar uppgifter som körs och resultat. -- vv är mer detaljerat och visar moduler som används och deras argument. -vvv är utöver det mer info, ex anslutningsinfo och ssh commands.
+- vvvv är en slutlig detaljnivå på debug nivå, vilket visar allt som ex .anslutingsdetaljer, api anrop och variabelnammn.
+den andra * handlar om att köra ansible playboks utan att igentligen ändra på något. Den är lite som en simulering av vad som skulle hända om du körde din ansible playbok, lite som namnet säger själv. Den "checkar" hur det skulle se ut men gör inte de riktiga ändringarna. 
+den sista * är en simpel syntax chek som kollar att din playbook inte har fel synbtax. 
+
+
 
 ## Study Material & Documentation
 

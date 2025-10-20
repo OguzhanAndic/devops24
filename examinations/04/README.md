@@ -53,12 +53,16 @@ module.
 
 How can we make the web server start with an addition of just one line to the playbook above?
 
+Answer: under the ansible.builtin.service: there is a line that is missing, this is the state line. it should say - state: started. The state command and the enabled command must be written down on the playbook/yml file for the connecton to start, as it is stated in on the ansible.builtin.service web guide under the parameter infomration on the state command. 
+
 # QUESTION B
 
 You make have noted that the `become: true` statement has moved from a specific task to the beginning
 of the playbook, and is on the same indentation level as `tasks:`.
 
 What does this accomplish?
+
+become: true is used to grant a task permission to execute with sudo (elevated) rights. When become: true is placed higher up in the playbook, at the same level as tasks:, it means that all tasks under that playbook will automatically run with sudo privileges, without needing to specify it for each individual task.
 
 # QUESTION C
 
@@ -72,8 +76,12 @@ log in to the machine and make sure that there are no `nginx` processes running.
 
 Why did we change the order of the tasks in the `04-uninstall-webserver.yml` playbook?
 
+Answer: The reason i had to change the order is to make sure that when we unistall the nginx it would not be acitve, becuase it could cause a conflict under the installment, so it is safer to stop the nginx porcess befor uninstalling. 
+
 # BONUS QUESTION
 
 Consider the output from the tasks above, and what we were actually doing on the machine.
 
 What is a good naming convention for tasks? (What SHOULD we write in the `name:` field`?)
+
+Answer: the name: parameter should allways describe what the task actually does. each task might do diffrent things and it is crucial that the name parameter gives som typ of information about what the task is about to do, so that the next devoleper dont have to spend unnecessary trying to figure out what each task does. 
