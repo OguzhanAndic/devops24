@@ -48,7 +48,7 @@ this as a file into `/etc/nginx/conf.d/https.conf` with Ansible with the
 [ansible.builtin.copy](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/copy_module.html)
 module.
 
-If you have gone through the preparation part for this examinination, the certificate and the key for the
+If you have gone through the preparation p[text](files/https.conf)art for this examinination, the certificate and the key for the
 certificate has already been created so we don't need to worry about that.
 
 In this directory, there is already a file called `files/https.conf`. Copy this directory to your Ansible
@@ -75,6 +75,8 @@ a number of keys and values that come from the output of the Ansible module.
 What does the output look like the first time you run this playbook?
 
 What does the output look like the second time you run this playbook?
+
+Answer: the first time i run the playbook i will get a message that points out that my server has gotten a change: true while the seconed time i run the playbook it shows me a changed: false. this means that the first time made a change to the configuration while the second time did not, since it has already been changed.
 
 # QUESTION B
 
@@ -114,12 +116,18 @@ Again, these addresses are just examples, make sure you use the IP of the actual
 Note also that `curl` needs the `--insecure` option to establish a connection to a HTTPS server with
 a self signed certificate.
 
+Answer: in the 05-web script you can make the task have a section that allways reloads the state of ngnix, making sure that nginx allways uses the configurations. 
+
 # QUESTION C
 
 What is the disadvantage of having a task that _always_ makes sure a service is restarted, even if there is
 no configuration change?
 
+Answer: This is mostly a question of wasted time. when you restar you will get downtime that might not have been neded at all, and restaring task without a puropse is a waste of energy from the servers/units. it is better to have manual restarts if needed so that you know why you need to restart the system instead if restarting it without a reason. 
+
 # BONUS QUESTION
 
 There are at least two _other_ modules, in addition to the `ansible.builtin.service` module that can restart
 a `systemd` service with Ansible. Which modules are they?
+
+Answer: ansible.builtin.systemd and community.general.systemd. both are used to manage the systemd serice, and is an option to the ansible.builtin.service moduel. 

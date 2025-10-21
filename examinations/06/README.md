@@ -4,7 +4,7 @@ The default web pages for any web server are not very interesting to look at.
 
 If we open a web browser and point it towards the address of our web server,
 you will likely get the default content of an unconfigured and unmanaged
-web server:
+web server: C-PTSD
 
 Open Firefox or Chrome and enter the IP address of the web server, either
 with http:// or http://
@@ -119,6 +119,8 @@ HINTS:
   also set the correct SELinux security context type on the directory and files. The context in question
   in this case should be `httpd_sys_content_t` for the `/var/www/example.internal/html/` directory.
 
+Answer: i have changed my 06-web.yml
+
 # QUESTION B
 
 To each of the tasks that change configuration files in the webserver, add a `register: [variable_name]`.
@@ -167,6 +169,8 @@ There are several ways to accomplish this, and there is no _best_ way to do this
 
 Is this a good way to handle these types of conditionals? What do you think?
 
+Answer: It works fine if you ask me, you only get a message if something is changed, meaning that if it skips it should not be a problem or at the veary least you see that there has not been any changes since the last time the playbook was runned. One negative thing about this is that its more code that might slow down the playbook running process, specialy if you have alot of when statements to check diffrent parts that might not need to be cheked. 
+
 # BONUS QUESTION
 
 Imagine you had a playbook with hundreds of tasks to be done on several hosts, and each one of these tasks
@@ -177,3 +181,10 @@ would you like the flow to work?
 
 Describe in simple terms what your preferred task flow would look like, not necessarily implemented in
 Ansible, but in general terms.
+
+Answer: i would consider only restarting or reloding the parts that is critical for the operations of the playbook. the flow should first group the configurations, validate them if necassary and then and only if needed restart and relode the effecte components that has been effected. 
+
+Run configs and updates -> check for changes -> validate that everything is in order -> restart and relode effected components (inly if needed, othervice do it later at a more prefirible time)
+
+
+
