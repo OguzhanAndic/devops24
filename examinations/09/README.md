@@ -23,3 +23,6 @@ instead of as a plain text string in the playbook.
 When the [QUESTION A](#question-a) is solved, use `ansible-vault` to store the password in encrypted
 form, and make it possible to run the playbook as before, but with the password as an
 Ansible Vault secret instead.
+
+note: for encryption of password i used the following command on the terminal: ansible-vault encrypt --vault-password-file vault_pass.txt vault.yaml
+you then have to use the following command to use the playbook: ansible-playbook 09-mariadb-password.yml --vault-password-file vault_pass.txt

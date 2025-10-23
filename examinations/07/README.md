@@ -23,11 +23,17 @@ Make similar changes to this playbook that we did for the _nginx_ server, so tha
 the `mariadb` service starts automatically at boot, and is started when the playbook
 is run.
 
+Answer: the playbook has been made and modified. 
+
 # QUESTION B
 
 When you have run the playbook above successfully, how can you verify that the `mariadb`
 service is started and is running?
 
+Answer: ny using ssh to go in to the vm and then using the command: sudo systemctl status mariadb. this will show you some information about the mariadb.service. If the "Active" field says active (running), the service is running. 
+
 # BONUS QUESTION
 
 How many different ways can use come up with to verify that the `mariadb` service is running?
+
+Answer: sudo systemctl status mariadb is probably one of the easiest ways to check, but you could also make a when: in the playbook to make sure that every thing works when you put up the vm with the ansible playbook. 

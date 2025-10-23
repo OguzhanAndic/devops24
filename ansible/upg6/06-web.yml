@@ -60,7 +60,6 @@
         var: nginx_res
       when: nginx_res is changed
 
-
     - name: Reload nginx
       ansible.builtin.service:
         name: nginx
