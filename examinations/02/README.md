@@ -111,6 +111,7 @@ incompatibilities.
 ## QUESTION A
 
 What happens if you run `ansible-inventory --list` in the directory you created above?
+
 Answer: The terminal will give an output of what looks like json code, describing your hostvars, showing there ip adresses, where their keys are and what ansible users are being used. 
 ## QUESTION B
 

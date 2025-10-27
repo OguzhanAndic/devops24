@@ -1,0 +1,19 @@
+---
+- name: create users for web
+  hosts: web
+  become: true
+  tasks:
+    
+    
+    
+    - name: create the users and groups
+      ansible.builtin.user:
+        name: "{{ item.name }}"
+        groups: "{{ item.groups }}"
+        append: true  #viktigt för att spara användare 
+        state: present
+      loop:
+        - { name: 'alovelace', groups: 'wheel,video,audio' }
+        - { name: 'aturing', groups: 'tape' }
+        - { name: 'edijkstra', groups: 'tcpdump' }
+        - { name: 'ghopper', groups: 'wheel,audio' }
