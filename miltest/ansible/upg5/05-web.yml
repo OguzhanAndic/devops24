@@ -1,0 +1,16 @@
+---
+- name: Copy HTTPS configuration to web servers
+  hosts: web
+  become: yes
+  tasks:
+    - name: Copy https.conf to nginx configuration directory
+      ansible.builtin.copy:
+        src: files/https.conf
+        dest: /etc/nginx/conf.d/https.conf
+        owner: root
+        group: root
+        mode: '0644'
+    - name: Reload nginx
+      ansible.builtin.service:
+        name: nginx
+        state: reloaded

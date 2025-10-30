@@ -1,0 +1,68 @@
+---
+- name: Security Compliance Checks
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Gather package facts
+      ansible.builtin.package_facts:
+
+    - name: firewalld should be installed
+      ansible.builtin.assert:
+        that: "'firewalld' in ansible_facts.packages"
+        success_msg: "firewalld is installed."
+        fail_msg: "firewalld is not installed."
+
+    - name: chrony should be installed
+      ansible.builtin.assert:
+        that: "'chrony' in ansible_facts.packages"
+        success_msg: "chrony is installed."
+        fail_msg: "chrony is not installed."
+
+    - name: sudo should be installed
+      ansible.builtin.assert:
+        that: "'sudo' in ansible_facts.packages"
+        success_msg: "sudo is installed."
+        fail_msg: "sudo is not installed."
+
+    - name: audit should be installed
+      ansible.builtin.assert:
+        that: "'audit' in ansible_facts.packages"
+        success_msg: "audit is installed."
+        fail_msg: "audit is not installed."
+
+    - name: rsyslog should be installed
+      ansible.builtin.assert:
+        that: "'rsyslog' in ansible_facts.packages"
+        success_msg: "rsyslog is installed."
+        fail_msg: "rsyslog is not installed."
+
+    - name: telnet-server should not be installed
+      ansible.builtin.assert:
+        that: "'telnet-server' not in ansible_facts.packages"
+        success_msg: "telnet-server is not installed."
+        fail_msg: "telnet-server is installed."
+
+    - name: rsh-server should not be installed
+      ansible.builtin.assert:
+        that: "'rsh-server' not in ansible_facts.packages"
+        success_msg: "rsh-server is not installed."
+        fail_msg: "rsh-server is installed."
+
+    - name: vsftpd should not be installed
+      ansible.builtin.assert:
+        that: "'vsftpd' not in ansible_facts.packages"
+        success_msg: "vsftpd is not installed."
+        fail_msg: "vsftpd is installed."
+
+    - name: ypserv should not be installed
+      ansible.builtin.assert:
+        that: "'ypserv' not in ansible_facts.packages"
+        success_msg: "ypserv is not installed."
+        fail_msg: "ypserv is installed."
+
+    - name: xinetd should not be installed
+      ansible.builtin.assert:
+        that: "'xinetd' not in ansible_facts.packages"
+        success_msg: "xinetd is not installed."
+        fail_msg: "xinetd is installed."
