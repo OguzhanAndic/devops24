@@ -1,5 +1,48 @@
 ---
 
+  - name: Ensure nginx is installed
+    ansible.builtin.package:
+      name: nginx
+      state: present
+
+  - name: Ensure the /etc/pki/nginx directory exists
+    ansible.builtin.file:
+      path: /etc/pki/nginx
+      state: directory
+      mode: "0755"
+      owner: root
+
+  - name: Ensure we have a /etc/pkig/nginx/private directory
+    ansible.builtin.file:
+      path: /etc/pki/nginx/private
+      state: directory
+      mode: "0700"
+      owner: root
+
+  - name: Ensure we have necessary software installed
+    ansible.builtin.package:
+      name: python3-cryptography
+      state: present
+
+  - name: Ensure we have a private key for our certificate
+    community.crypto.openssl_privatekey:
+      path: /etc/pki/nginx/private/server.key
+
+  - name: Create a self-signed certificate
+    community.crypto.x509_certificate:
+      path: /etc/pki/nginx/server.crt
+      privatekey_path: /etc/pki/nginx/private/server.key
+      provider: selfsigned
+
+
+
+
+  - name: Ensure nginx is enabled and running
+    ansible.builtin.service:
+      name: nginx
+      state: started
+      enabled: true
+
   - name: Ensure web root directory exists
     ansible.builtin.file:
       path: /var/www/example.internal/html
@@ -14,27 +57,29 @@
       var: dir_res
     when: dir_res is changed
 
-
   - name: Deploy index.html
     ansible.builtin.copy:
-      src: index.html
+      src: files/index.html
       dest: /var/www/example.internal/html/index.html
       owner: root
       group: root
       mode: '0644'
     register: html_res
 
+  - name: Copy HTTPS configuration
+    ansible.builtin.copy:
+      src: files/https.conf
+      dest: /etc/nginx/conf.d/https.conf
+      owner: root
+      group: root
+      mode: '0644'
+    register: https_res
+    notify: Reload nginx
+
   - name: Print the value of html_res
     ansible.builtin.debug:
       var: html_res
     when: html_res is changed
-
-
-  - name: Ensure nginx is installed
-    ansible.builtin.package:
-      name: nginx
-      state: present
-
 
   - name: Ensure nginx conf.d directory exists
     ansible.builtin.file:
@@ -44,16 +89,9 @@
       group: root
       mode: '0755'
 
-
-  - name: Copy HTTPS configuration
-    ansible.builtin.copy:
-      src: https.conf
-      dest: /etc/nginx/conf.d/https.conf
-      owner: root
-      group: root
-      mode: '0644'
     register: https_res
     notify: Reload nginx
+
 
   - name: Print the value of https_res
     ansible.builtin.debug:
@@ -85,18 +123,6 @@
       group: root
       mode: '0750'
 
-
-  - name: Generate a self-signed SSL certificate if missing
-    ansible.builtin.command:
-      cmd: >
-        openssl req -x509 -nodes -days 365 -newkey rsa:2048
-        -keyout /etc/pki/nginx/private/server.key
-        -out /etc/pki/nginx/private/server.crt
-        -subj "/CN=example.internal"
-    args:
-      creates: /etc/pki/nginx/private/server.crt
-
-
   - name: Ensure nginx key file has correct permissions
     ansible.builtin.file:
       path: /etc/pki/nginx/private/server.key
@@ -104,9 +130,3 @@
       group: nginx
       mode: '0640'
 
-
-  - name: Ensure nginx is enabled and running
-    ansible.builtin.service:
-      name: nginx
-      state: started
-      enabled: true
