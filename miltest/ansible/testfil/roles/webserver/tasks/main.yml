@@ -14,6 +14,7 @@
       var: dir_res
     when: dir_res is changed
 
+
   - name: Deploy index.html
     ansible.builtin.copy:
       src: index.html
@@ -28,6 +29,22 @@
       var: html_res
     when: html_res is changed
 
+
+  - name: Ensure nginx is installed
+    ansible.builtin.package:
+      name: nginx
+      state: present
+
+
+  - name: Ensure nginx conf.d directory exists
+    ansible.builtin.file:
+      path: /etc/nginx/conf.d
+      state: directory
+      owner: root
+      group: root
+      mode: '0755'
+
+
   - name: Copy HTTPS configuration
     ansible.builtin.copy:
       src: https.conf
@@ -36,12 +53,13 @@
       group: root
       mode: '0644'
     register: https_res
-    notify: Reload nginx 
+    notify: Reload nginx
 
   - name: Print the value of https_res
     ansible.builtin.debug:
       var: https_res
     when: https_res is changed
+
 
   - name: Deploy nginx configuration from template
     ansible.builtin.template:
@@ -51,12 +69,33 @@
       group: root
       mode: '0644'
     register: nginx_res
-    notify: Reload nginx 
+    notify: Reload nginx
 
   - name: Print the value of nginx_res
     ansible.builtin.debug:
       var: nginx_res
     when: nginx_res is changed
+
+
+  - name: Ensure nginx key directory exists
+    ansible.builtin.file:
+      path: /etc/pki/nginx/private
+      state: directory
+      owner: root
+      group: root
+      mode: '0750'
+
+
+  - name: Generate a self-signed SSL certificate if missing
+    ansible.builtin.command:
+      cmd: >
+        openssl req -x509 -nodes -days 365 -newkey rsa:2048
+        -keyout /etc/pki/nginx/private/server.key
+        -out /etc/pki/nginx/private/server.crt
+        -subj "/CN=example.internal"
+    args:
+      creates: /etc/pki/nginx/private/server.crt
+
 
   - name: Ensure nginx key file has correct permissions
     ansible.builtin.file:
@@ -65,3 +104,9 @@
       group: nginx
       mode: '0640'
 
+
+  - name: Ensure nginx is enabled and running
+    ansible.builtin.service:
+      name: nginx
+      state: started
+      enabled: true
